@@ -20,6 +20,9 @@ from sklearn.metrics import hamming_loss
 from sklearn.metrics import max_error
 
 from sklearn.metrics import mean_absolute_percentage_error
+
+
+import pickle
 # enter path to directory where data is stored
 path_to_database = '/home/kepler42/EE494/DISTRIBUTED_OPENSOURCE/FINGERPRINTING_DB'
 
@@ -61,7 +64,7 @@ method = 'knn' # 'knn'
 
 def load_data(path_to_data):
     
-    path_to_data = "/home/kepler42/EE494/merged.csv"
+    path_to_data = "/home/kepler42/EE494/EE494/merged.csv"
     df = pd.read_csv(path_to_data,sep=',')
     
     feature_cols = df.columns.to_list()
@@ -71,7 +74,9 @@ def load_data(path_to_data):
     x = np.asarray(df[keep])
     print(x)
 
+    #x_y coordinates target vars
     x_y = np.asarray(df[['0','1']] )
+
     if method=='knnC':
         x_y = np.tostring(np.asarray(df['0']))
         print(x_y)
@@ -130,8 +135,8 @@ y_ktrain = y_train.copy()
 
 if method=='knn':
 
-    for k in range(1,26):
-        
+    #for k in range(1,26):
+        k =8
         knn = KNeighborsRegressor(n_neighbors = k, weights='distance', algorithm='kd_tree',p=3,metric='euclidean')
         regr = MultiOutputRegressor(knn)
         # regr is the model 
@@ -145,6 +150,7 @@ if method=='knn':
 
         mean_error = np.sum(distance)/y_test.shape[0]
         print("mean_error score is ", mean_error," for K-Value:",k)
+
 
 
 
@@ -171,6 +177,8 @@ else:
 
 #if cused.size > 0:
 #    print('cused %.2lf' % np.mean(cused))
+filename = '/home/kepler42/EE494/EE494/DISTRIBUTED_OPENSOURCE/SW_MATLAB_PYTHON/Cluster/P1/pickleRick.pkl'
+pickle.dump(regr, open(filename,'wb'))
 
 tsum += time.perf_counter() - t
 print('\n time  %.2lf s' % tsum)
