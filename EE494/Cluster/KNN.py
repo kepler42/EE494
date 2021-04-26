@@ -177,7 +177,7 @@ else:
 
 #if cused.size > 0:
 #    print('cused %.2lf' % np.mean(cused))
-filename = '/home/kepler42/EE494/EE494/DISTRIBUTED_OPENSOURCE/SW_MATLAB_PYTHON/Cluster/P1/pickleRick.pkl'
+filename = '/home/kepler42/EE494/EE494/Cluster/pickleRick.pkl'
 pickle.dump(regr, open(filename,'wb'))
 
 tsum += time.perf_counter() - t
