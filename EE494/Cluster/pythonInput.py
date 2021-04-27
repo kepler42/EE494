@@ -35,16 +35,16 @@ def main():
     #Vars
 
     #ONLY USEFUL IF num_of_points >7
-    num_of_points = 3
+    num_of_points = 10
     threshold =1.6
 
     filename = '/home/kepler42/EE494/EE494/Cluster/pickleRick.pkl'
     load_model = pickle.load(open(filename,'rb'))
 
     #method can be std or IQR
-    method1 = "IQR"
+    method1 = "std"
     #method can be mean or centroid
-    method2 = "centroid"
+    method2 = "mean"
     
     while run_var:
         run_var = cin(load_model,data_points)
@@ -77,6 +77,8 @@ def main():
             else:
                 raise Exception("method2 undefined")
             print("method1 - ",method1, "method2 - ", method2," Acurate",result)
+
+            data_points.clear()
             
             
 main()
