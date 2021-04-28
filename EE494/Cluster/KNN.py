@@ -64,7 +64,7 @@ method = 'knn' # 'knn'
 
 def load_data(path_to_data):
     
-    path_to_data = "/home/kepler42/EE494/EE494/merged.csv"
+    path_to_data = "/home/kepler42/EE494/EE494/Cluster/merged2.csv"
     df = pd.read_csv(path_to_data,sep=',')
     
     feature_cols = df.columns.to_list()
@@ -177,7 +177,7 @@ else:
 
 #if cused.size > 0:
 #    print('cused %.2lf' % np.mean(cused))
-filename = '/home/kepler42/EE494/EE494/Cluster/pickleRick.pkl'
+filename = '/home/kepler42/EE494/EE494/Cluster/pickleRick2.pkl'
 pickle.dump(regr, open(filename,'wb'))
 
 tsum += time.perf_counter() - t

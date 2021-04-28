@@ -35,7 +35,7 @@ def main():
     #Vars
 
     #ONLY USEFUL IF num_of_points >7
-    num_of_points = 10
+    num_of_points = 3
     threshold =1.6
 
     filename = '/home/kepler42/EE494/EE494/Cluster/pickleRick.pkl'
@@ -54,7 +54,7 @@ def main():
                 z_score = np.abs(stats.zscore(data_points,axis=0))
                 outlier = (z_score < threshold).all(axis=1) 
                 data_points_corrected = [x for x, y in zip(data_points, outlier) if y == True]
-                print(data_points_corrected)
+                
 
             elif method1 == "IQR":
                 Q1 = np.quantile(data_points, .25,axis=0)
