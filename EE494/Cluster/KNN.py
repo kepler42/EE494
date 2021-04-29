@@ -24,47 +24,13 @@ from sklearn.metrics import mean_absolute_percentage_error
 
 import pickle
 # enter path to directory where data is stored
-path_to_database = '/home/kepler42/EE494/DISTRIBUTED_OPENSOURCE/FINGERPRINTING_DB'
+path_to_database = "/home/kepler42/EE494/EE494/merged.csv"
 
 method = 'knn' # 'knn'
 
 
-"""class MultiColumnLabelEncoder:
-
-    def __init__(self, columns=None):
-        self.columns = columns # array of column names to encode
-
-
-    def fit(self, X, y=None):
-        self.encoders = {}
-        columns = X.columns if self.columns is None else self.columns
-        for col in columns:
-            self.encoders[col] = LabelEncoder().fit(X[col])
-        return self
-
-
-    def transform(self, X):
-        output = X.copy()
-        columns = X.columns if self.columns is None else self.columns
-        for col in columns:
-            output[col] = self.encoders[col].transform(X[col])
-        return output
-
-
-    def fit_transform(self, X, y=None):
-        return self.fit(X,y).transform(X)
-
-
-    def inverse_transform(self, X):
-        output = X.copy()
-        columns = X.columns if self.columns is None else self.columns
-        for col in columns:
-            output[col] = self.encoders[col].inverse_transform(X[col])
-        return output"""
-
 def load_data(path_to_data):
     
-    path_to_data = "/home/kepler42/EE494/EE494/Cluster/merged2.csv"
     df = pd.read_csv(path_to_data,sep=',')
     
     feature_cols = df.columns.to_list()
@@ -78,22 +44,12 @@ def load_data(path_to_data):
     x_y = np.asarray(df[['0','1']] )
 
     if method=='knnC':
-        x_y = np.tostring(np.asarray(df['0']))
-        print(x_y)
-        x_y = x_y.reshape(x_y.shape[0],1)
+        df["x_y"] = (df["0"].apply(str) +";"+ df["1"].apply(str)).astype("string")
+        x_y = np.asarray(df[['x_y']] )
 
-
-    # feature_cols = df.columns.to_list()
-    # feature_cols.remove('Unnamed: 0')
-    # feature_cols.remove('0')
-    # feature_cols.remove('1')
 
     x = np.asarray(df[keep])
-    # dim = np.zeros((x_y.shape[0],x_y.shape[1]+1))
-    # dim[:,:-1] = x_y
 
-    # #Converts 100 to nan
-    # x[x==100] = np.nan
     print(x)
 
     X_train, X_test, y_train, y_test = train_test_split(x, x_y, test_size=0.20, shuffle=True)
@@ -110,6 +66,16 @@ def distance_minkowski(a, b, q):
     return np.power(np.sum(np.power(np.absolute(a-b), q)))
 
 #######################DISTANCE_END##############################
+
+
+##################KnnC convert string to x, y coordinates##############
+def str_to_xy(pred):
+    pred = pred.flatten()
+    return np.array([list(map(float,x_y.split(';'))) for x_y in pred])
+##################KnnC convert string to x, y coordinates##############
+
+
+
 
 
 tsum = 0
@@ -155,18 +121,26 @@ if method=='knn':
 
 
 elif method=='knnC':
-    print(y_ktrain)
 
-#     for K in range(25):
-#         K_value = K+1
-        
-#         knn = KNeighborsClassifier(n_neighbors = K_value, weights='uniform', algorithm='auto')
-#         regr = MultiOutputClassifier(knn)
-#         regr.fit(X_ktrain, y_ktrain)
+    #for k in range(1,26):
+        k = 8
+        knn = KNeighborsClassifier(n_neighbors = k, weights='distance', algorithm='kd_tree',p=3,metric='euclidean')
+        regr = MultiOutputClassifier(knn)
+        regr.fit(X_ktrain, y_ktrain)
+       
 
-#         # regr is the model  
-#         y_pred = regr.predict(X_test)
-#         print("R2 score is ", r2_score(y_test,y_pred)," for K-Value:",K_value)
+       # regr is the model  
+        y_pred = regr.predict(X_test)
+        convert_y_pred = str_to_xy(y_pred)
+        convert_y_test = str_to_xy(y_test)
+  
+
+        print("R2 score is ", r2_score(convert_y_test,convert_y_pred)," for K-Value:",k)
+        distance = np.sqrt(np.sum(np.square(abs(convert_y_test-convert_y_pred)),1))
+        max_error = np.amax(distance)
+        print("max_error score is ", max_error," for K-Value:",k)
+        mean_error = np.sum(distance)/y_test.shape[0]
+        print("mean_error score is ", mean_error," for K-Value:",k)
 
 
 else:
@@ -177,6 +151,9 @@ else:
 
 #if cused.size > 0:
 #    print('cused %.2lf' % np.mean(cused))
+
+
+
 filename = '/home/kepler42/EE494/EE494/Cluster/pickleRick2.pkl'
 pickle.dump(regr, open(filename,'wb'))
 

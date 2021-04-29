@@ -52,7 +52,7 @@ def main():
 
             if method1 == "std":
                 z_score = np.abs(stats.zscore(data_points,axis=0))
-                outlier = (z_score < threshold).all(axis=1) 
+                outlier = (z_score < 1.6).all(axis=1) 
                 data_points_corrected = [x for x, y in zip(data_points, outlier) if y == True]
                 
 
