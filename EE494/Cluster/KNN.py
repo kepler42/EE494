@@ -24,7 +24,7 @@ from sklearn.metrics import mean_absolute_percentage_error
 
 import pickle
 # enter path to directory where data is stored
-path_to_database = "/home/kepler42/EE494/EE494/merged.csv"
+path_to_database = "/home/kepler42/EE494/EE494/Cluster/merged2.csv"
 
 method = 'knn' # 'knn'
 
@@ -36,9 +36,11 @@ def load_data(path_to_data):
     feature_cols = df.columns.to_list()
     rem = ['Unnamed: 0','0','1','x_y']
     keep = ['2','3','4']
+    # df[keep] = df[keep].apply(lambda x: np.power(10,-x/10))
+    
 
     x = np.asarray(df[keep])
-    print(x)
+    
 
     #x_y coordinates target vars
     x_y = np.asarray(df[['0','1']] )
@@ -144,7 +146,7 @@ elif method=='knnC':
 
 
 else:
-    print('Unknown method. Please choose either "km" or "ap".')
+    print('Unknown method. Please choose either "kcc" or "ap".')
     quit()
 
 

@@ -5,8 +5,11 @@ import numpy as np
 import scipy.stats as stats
 
 
+def str_to_xy(pred):
+    pred = pred.flatten()
+    return np.array([list(map(float,x_y.split(';'))) for x_y in pred])
 
-def cin(load_model,data_points):
+def cin(load_model,load_model2,data_points):
     #function similar to cin >> data
 
     try:
@@ -18,8 +21,9 @@ def cin(load_model,data_points):
         data_points.append(RSSI_vals)
         print(data_points)
         result = load_model.predict([RSSI_vals])
+     
        
-        print("Approx  ",result)
+        #print("Approx  ",result2)
         
         return True
     
@@ -39,15 +43,18 @@ def main():
     threshold =1.6
 
     filename = '/home/kepler42/EE494/EE494/Cluster/pickleRick.pkl'
+    filename2 = '/home/kepler42/EE494/EE494/Cluster/pickleRick2.pkl'
     load_model = pickle.load(open(filename,'rb'))
+    load_model2 = pickle.load(open(filename2,'rb'))
 
     #method can be std or IQR
-    method1 = "std"
+    method1 = "IQR"
     #method can be mean or centroid
     method2 = "mean"
     
+    
     while run_var:
-        run_var = cin(load_model,data_points)
+        run_var = cin(load_model,load_model2,data_points)
         if(len(data_points)%num_of_points == 0):
 
             if method1 == "std":
@@ -71,12 +78,13 @@ def main():
             if method2 == "mean":
                 mean_point = np.mean(data_points_corrected,axis = 0)
                 result = load_model.predict([mean_point])
+                result2 = load_model2.predict([mean_point])
             elif method2 == "centroid":
                 predictions = load_model.predict(data_points_corrected)
                 result = np.mean(predictions,axis = 0)
             else:
                 raise Exception("method2 undefined")
-            print("method1 - ",method1, "method2 - ", method2," Acurate",result)
+            print("method1 - ",method1, "method2 - ", method2," Acurate",result,result2)
 
             data_points.clear()
             
