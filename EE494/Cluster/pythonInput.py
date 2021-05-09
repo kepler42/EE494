@@ -16,14 +16,16 @@ def cin(load_model,load_model2,data_points):
         input_str = input()
         if input_str[0] == 'x':
             return False
+        print("OK")
         RSSI_vals = [int(i) for i in list(input_str.split(" "))[1:4]]
+        print(RSSI_vals)
     
         data_points.append(RSSI_vals)
-        print(data_points)
+        
         result = load_model.predict([RSSI_vals])
-     
+
        
-        #print("Approx  ",result2)
+        print("Approx  ",result)
         
         return True
     

@@ -156,7 +156,7 @@ else:
 
 
 
-filename = '/home/kepler42/EE494/EE494/Cluster/pickleRick2.pkl'
+filename = '/home/kepler42/EE494/EE494/Cluster/pickleRickKnn.pkl'
 pickle.dump(regr, open(filename,'wb'))
 
 tsum += time.perf_counter() - t
