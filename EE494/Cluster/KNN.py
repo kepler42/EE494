@@ -24,9 +24,9 @@ from sklearn.metrics import mean_absolute_percentage_error
 
 import pickle
 # enter path to directory where data is stored
-path_to_database = "/home/kepler42/EE494/EE494/Cluster/merged2.csv"
+path_to_database = "/home/kepler42/EE494/EE494/Cluster/merged3.csv"
 
-method = 'knn' # 'knn'
+method = 'knnC' # 'knn'
 
 
 def load_data(path_to_data):
@@ -54,7 +54,7 @@ def load_data(path_to_data):
 
     print(x)
 
-    X_train, X_test, y_train, y_test = train_test_split(x, x_y, test_size=0.20, shuffle=True)
+    X_train, X_test, y_train, y_test = train_test_split(x, x_y, test_size=0.05, shuffle=True)
     
     return (X_train, y_train, X_test, y_test)
 
@@ -156,7 +156,7 @@ else:
 
 
 
-filename = '/home/kepler42/EE494/EE494/Cluster/pickleRickKnn.pkl'
+filename = '/home/kepler42/EE494/EE494/Cluster/pickleRickKnnC_9May.pkl'
 pickle.dump(regr, open(filename,'wb'))
 
 tsum += time.perf_counter() - t
