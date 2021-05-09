@@ -85,6 +85,7 @@ def main():
         if(len(data_points)%num_of_points == 0):
 
             knnAp = load_model.predict(data_points)
+            
             knncAp = load_model2.predict(data_points)
             knncAp = str_to_xy(knncAp)
 
@@ -131,7 +132,7 @@ def main():
 
                 
 
-                #Zscore
+                # Zscore
                 # print(len(data_points_corrected2))
                 # if (len(data_points_corrected2) !=0):
                 #     mean_point2 = np.mean(data_points_corrected2,axis = 0) 
@@ -150,6 +151,7 @@ def main():
             #print( method2 - ", method2," Acurate",result,result2)
 
             data_points.clear()
+            x_y.clear()
 
 NUM_CLIENTS = int(sys.argv[1])            
 main()
